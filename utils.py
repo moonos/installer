@@ -11,7 +11,7 @@ def build_lang_list(builder=None):
     if langlist.get_column(0) == None:
         model = Gtk.ListStore(str, str)
 
-        langfile = open('lang.txt')
+        langfile = open('data/lang.txt')
         for line in langfile.readlines():
             try:
                 if not line.startswith("#"):
