@@ -1,9 +1,10 @@
 from gi.repository import Gtk
-import utils
+from utils import Utils
 
 class Handler():
     def __init__(self, builder=None):
-        self.builder = builder;
+        self.builder = builder
+        self.utils = Utils(builder)
         
     def mark_as_complete(self, box=None):
         assistant = self.builder.get_object("assistant1")
@@ -25,9 +26,11 @@ class Handler():
     def on_assistant1_prepare(self, assistant, page):
         if not assistant.get_page_complete(page):
             if assistant.get_current_page() == 1:
-                utils.build_lang_list(self.builder)
+                self.utils.build_lang_list()
+            elif assistant.get_current_page() == 2:
+                self.utils.build_kb_lists()
             elif assistant.get_current_page() == 3:
-                utils.build_timezone(self.builder)
+                self.utils.build_timezone()
         else:
             print "already initialized"
         
@@ -35,8 +38,11 @@ class Handler():
         self.mark_as_complete("box_language")
     
     def on_timezone_event_button_release_event(self, widget, event):
-        utils.timezone_map_clicked(self.builder, event)
+        self.utils.timezone_map_clicked(event)
     
     def on_combobox_timezone_changed(self, combobox):
-        utils.timezone_combo_selected(self.builder, combobox)
+        self.utils.timezone_combo_selected(combobox)
         self.mark_as_complete("box_timezone")
+    
+    def on_keylanglist_selection_changed(self, selection):
+        self.utils.assign_keyboard_layout(selection)
