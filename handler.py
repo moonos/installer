@@ -23,10 +23,13 @@ class Handler():
         print "hello"
     
     def on_assistant1_prepare(self, assistant, page):
-        if assistant.get_current_page() == 1:
-            utils.build_lang_list(self.builder)
-        elif assistant.get_current_page() == 2:
-            utils.build_timezone(self.builder)
+        if not assistant.get_page_complete(page):
+            if assistant.get_current_page() == 1:
+                utils.build_lang_list(self.builder)
+            elif assistant.get_current_page() == 3:
+                utils.build_timezone(self.builder)
+        else:
+            print "already initialized"
         
     def on_treeview_selection1_changed(self, selection):
         self.mark_as_complete("box_language")

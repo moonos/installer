@@ -130,8 +130,8 @@ def build_timezone(builder=None):
     combo_timezones.add_attribute(renderer, 'text', 0)
     combo_timezones.set_model(model)
     
-    timezone_map = builder.get_object("timezone_map")
-    timezone_map.set_from_file("data/timezone/bg.png")
+    #timezone_map = builder.get_object("timezone_map")
+    #timezone_map.set_from_file("data/timezone/bg.png")
 
 def timezone_select(builder=None, timezone=None):        
     im = Image.open('data/timezone/cc.png')
