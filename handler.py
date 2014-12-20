@@ -46,9 +46,12 @@ class Handler():
     
     def on_keylanglist_selection_changed(self, selection):
         self.utils.assign_keyboard_layout(selection)
+        self.mark_as_complete("box_keyboard")
     
     def on_combobox_keymodel_changed(self, combobox):
         self.utils.assign_keyboard_model(combobox)
+        self.mark_as_complete("box_keyboard")
     
     def on_keylangsublist_selection_changed(self, selection):
         self.utils.assign_keyboard_variant(selection)
+        self.mark_as_complete("box_keyboard")
