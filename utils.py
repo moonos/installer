@@ -238,13 +238,21 @@ class Utils():
         
         keylanglist = self.builder.get_object("keylanglist")
         keylanglist.set_model(layouts)
-        column = Gtk.TreeViewColumn("Layout", self.renderer, text=0)
+        column = Gtk.TreeViewColumn("Layouts", self.renderer, text=0)
         keylanglist.append_column(column)
         try:
             path = layouts.get_path(set_keyboard_layout)
             keylanglist.set_cursor(path)
             keylanglist.scroll_to_cell(path)
         except NameError: pass  # set_keyboard_layout not set
+        
+    def assign_keyboard_model(self, combobox):
+        model = combobox.get_model()
+        active = combobox.get_active()
+        (self.keyboard_model_description,
+         self.keyboard_model) = model[active]
+        print self.keyboard_model
+        #os.system('setxkbmap -model ' + self.keyboard_model)
         
     def assign_keyboard_layout(self, selection):
         model, active = selection.get_selected_rows()
@@ -261,3 +269,14 @@ class Utils():
         # ... and select the first variant (standard)
         keylangsublist.set_cursor(0)
     
+    def assign_keyboard_variant(self, selection):
+        model, active = selection.get_selected_rows()
+        if not active: return
+        (self.keyboard_variant_description,
+         self.keyboard_variant) = model[active[0]]
+        if self.keyboard_variant:
+            print self.keyboard_variant
+            #os.system('setxkbmap -variant ' + self.keyboard_variant)
+        else:
+            print self.keyboard_layout
+            #os.system('setxkbmap -layout ' + self.keyboard_layout)
