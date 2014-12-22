@@ -413,6 +413,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="visibility">False</property>
+                <property name="placeholder_text" translatable="yes">New Password</property>
                 <property name="input_purpose">password</property>
               </object>
               <packing>
@@ -425,6 +426,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="visibility">False</property>
+                <property name="placeholder_text" translatable="yes">Verify</property>
                 <property name="input_purpose">password</property>
               </object>
               <packing>
