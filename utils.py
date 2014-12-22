@@ -32,87 +32,87 @@ class Utils():
     def build_timezone(self):
         combo_timezones = self.builder.get_object("combobox_timezone")
         
-        self.timezone_colors = []
-        timezone_colors["2b0000"] = "-11.0"
-        timezone_colors["550000"] = "-10.0"
-        timezone_colors["66ff00"] = "-9.5"
-        timezone_colors["800000"] = "-9.0"
-        timezone_colors["aa0000"] = "-8.0"
-        timezone_colors["d40000"] = "-7.0"
-        timezone_colors["ff0001"] = "-6.0"
-        timezone_colors["66ff00"] = "-5.5"
-        timezone_colors["ff2a2a"] = "-5.0"
-        timezone_colors["c0ff00"] = "-4.5"
-        timezone_colors["ff5555"] = "-4.0"
-        timezone_colors["00ff00"] = "-3.5"
-        timezone_colors["ff8080"] = "-3.0"
-        timezone_colors["ffaaaa"] = "-2.0"
-        timezone_colors["ffd5d5"] = "-1.0"
-        timezone_colors["2b1100"] = "0.0"
-        timezone_colors["552200"] = "1.0"
-        timezone_colors["803300"] = "2.0"
-        timezone_colors["aa4400"] = "3.0"
-        timezone_colors["00ff66"] = "3.5"
-        timezone_colors["d45500"] = "4.0"
-        timezone_colors["00ccff"] = "4.5"
-        timezone_colors["ff6600"] = "5.0"
-        timezone_colors["0066ff"] = "5.5"        
-        timezone_colors["00ffcc"] = "5.75"
-        timezone_colors["ff7f2a"] = "6.0"
-        timezone_colors["cc00ff"] = "6.5"
-        timezone_colors["ff9955"] = "7.0"
-        timezone_colors["ffb380"] = "8.0"
-        timezone_colors["ffccaa"] = "9.0"
-        timezone_colors["a90345"] = "9.5"
-        timezone_colors["ffe6d5"] = "10.0"
-        timezone_colors["d10255"] = "10.5"
-        timezone_colors["d4aa00"] = "11.0"
-        timezone_colors["fc0266"] = "11.5"
-        timezone_colors["ffcc00"] = "12.0"
-        timezone_colors["fd2c80"] = "12.75"
-        timezone_colors["fc5598"] = "13.0"
+        self.timezone_colors = {}
+        self.timezone_colors["2b0000"] = "-11.0"
+        self.timezone_colors["550000"] = "-10.0"
+        self.timezone_colors["66ff00"] = "-9.5"
+        self.timezone_colors["800000"] = "-9.0"
+        self.timezone_colors["aa0000"] = "-8.0"
+        self.timezone_colors["d40000"] = "-7.0"
+        self.timezone_colors["ff0001"] = "-6.0"
+        self.timezone_colors["66ff00"] = "-5.5"
+        self.timezone_colors["ff2a2a"] = "-5.0"
+        self.timezone_colors["c0ff00"] = "-4.5"
+        self.timezone_colors["ff5555"] = "-4.0"
+        self.timezone_colors["00ff00"] = "-3.5"
+        self.timezone_colors["ff8080"] = "-3.0"
+        self.timezone_colors["ffaaaa"] = "-2.0"
+        self.timezone_colors["ffd5d5"] = "-1.0"
+        self.timezone_colors["2b1100"] = "0.0"
+        self.timezone_colors["552200"] = "1.0"
+        self.timezone_colors["803300"] = "2.0"
+        self.timezone_colors["aa4400"] = "3.0"
+        self.timezone_colors["00ff66"] = "3.5"
+        self.timezone_colors["d45500"] = "4.0"
+        self.timezone_colors["00ccff"] = "4.5"
+        self.timezone_colors["ff6600"] = "5.0"
+        self.timezone_colors["0066ff"] = "5.5"        
+        self.timezone_colors["00ffcc"] = "5.75"
+        self.timezone_colors["ff7f2a"] = "6.0"
+        self.timezone_colors["cc00ff"] = "6.5"
+        self.timezone_colors["ff9955"] = "7.0"
+        self.timezone_colors["ffb380"] = "8.0"
+        self.timezone_colors["ffccaa"] = "9.0"
+        self.timezone_colors["a90345"] = "9.5"
+        self.timezone_colors["ffe6d5"] = "10.0"
+        self.timezone_colors["d10255"] = "10.5"
+        self.timezone_colors["d4aa00"] = "11.0"
+        self.timezone_colors["fc0266"] = "11.5"
+        self.timezone_colors["ffcc00"] = "12.0"
+        self.timezone_colors["fd2c80"] = "12.75"
+        self.timezone_colors["fc5598"] = "13.0"
             
         #Add some timezones for cities which are located on borders (for which the color doesn't match the color of the rest of the timezone)
-        timezone_colors["6771a9"] = "5.5" # Calcutta, India
-        timezone_colors["ff7b7b"] = "-3.0" # Buenos Aires, Argentina
-        timezone_colors["ff7f7f"] = "-3.0" # Rio Gallegos, Argentina
-        timezone_colors["d45c27"] = "11.0" # Lord Howe, Australia
-        timezone_colors["b71f54"] = "10.5" # Adelaide, Australia        
-        timezone_colors["d29130"] = "-4.0" # Aruba
-        timezone_colors["ee5f00"] = "4.0" # Baku, Azerbaidjan
-        timezone_colors["6a2a00"] = "2.0" # Sofia, Bulgaria
-        timezone_colors["3c1800"] = "" # Porto Novo
-        timezone_colors["3c1800"] = "1.0" # Benin
-        timezone_colors["ff9898"] = "-3.0" # Maceio, Brazil
-        timezone_colors["ff3f3f"] = "-4.0" # Rio Branco, Brazil
-        timezone_colors["ff802c"] = "6.0" # Thimphu, Bhutan
-        timezone_colors["ff0000"] = "-6.0" # Belize
-        timezone_colors["11f709"] = "-3.5" # St Johns, Canada
-        timezone_colors["e56347"] = "-4.0" # Curacao
-        timezone_colors["cd5200"] = "4.0" # Tbilisi, Georgia
-        timezone_colors["2f1300"] = "0.0" # Guernsey. UK
-        timezone_colors["cea7a3"] = "0.0" # Danmarkshavn, Greenland
-        timezone_colors["ff2b2b"] = "-4.0" # Thule, Greenland
-        timezone_colors["79594e"] = "0.0" # Banjul, Gambia
-        timezone_colors["c7a19d"] = "0.0" # Conakry, Guinea
-        timezone_colors["5b3e31"] = "0.0" # Bissau, Guinea-Bissau
-        timezone_colors["3f2314"] = "0.0" # Monrovia, Liberia
-        timezone_colors["d515db"] = "6.5" # Rangoon, Myanmar
-        timezone_colors["fd0000"] = "-7.0" # Bahia_Banderas, Mexico
-        timezone_colors["ffb37f"] = "8.0" # Kuching, Malaysia
-        timezone_colors["ff0066"] = "11.5" # Norfolk
-        timezone_colors["351500"] = "1.0" # Lagos, Nigeria
-        timezone_colors["ff8935"] = "12.75" # Chatham, New Zealand
-        timezone_colors["913a00"] = "2.0" # Kigali, Rwanda
-        timezone_colors["ffb17d"] = "8.0" # Singapore
-        timezone_colors["ddb6b3"] = "0.0" # Freetown, Sierra Leone
-        timezone_colors["ffb482"] = "9.0" # Dili, East Timor
-        timezone_colors["ff5599"] = "13.0" # Tongatapu, Tonga
-        timezone_colors["ff2020"] = "-5.0" # Monticello, USA        
-        timezone_colors["ff2525"] = "-5.0" # Marengo, USA
-        timezone_colors["9d0000"] = "-9.0" # Metlakatla, Alaska/USA
+        self.timezone_colors["6771a9"] = "5.5" # Calcutta, India
+        self.timezone_colors["ff7b7b"] = "-3.0" # Buenos Aires, Argentina
+        self.timezone_colors["ff7f7f"] = "-3.0" # Rio Gallegos, Argentina
+        self.timezone_colors["d45c27"] = "11.0" # Lord Howe, Australia
+        self.timezone_colors["b71f54"] = "10.5" # Adelaide, Australia        
+        self.timezone_colors["d29130"] = "-4.0" # Aruba
+        self.timezone_colors["ee5f00"] = "4.0" # Baku, Azerbaidjan
+        self.timezone_colors["6a2a00"] = "2.0" # Sofia, Bulgaria
+        self.timezone_colors["3c1800"] = "" # Porto Novo
+        self.timezone_colors["3c1800"] = "1.0" # Benin
+        self.timezone_colors["ff9898"] = "-3.0" # Maceio, Brazil
+        self.timezone_colors["ff3f3f"] = "-4.0" # Rio Branco, Brazil
+        self.timezone_colors["ff802c"] = "6.0" # Thimphu, Bhutan
+        self.timezone_colors["ff0000"] = "-6.0" # Belize
+        self.timezone_colors["11f709"] = "-3.5" # St Johns, Canada
+        self.timezone_colors["e56347"] = "-4.0" # Curacao
+        self.timezone_colors["cd5200"] = "4.0" # Tbilisi, Georgia
+        self.timezone_colors["2f1300"] = "0.0" # Guernsey. UK
+        self.timezone_colors["cea7a3"] = "0.0" # Danmarkshavn, Greenland
+        self.timezone_colors["ff2b2b"] = "-4.0" # Thule, Greenland
+        self.timezone_colors["79594e"] = "0.0" # Banjul, Gambia
+        self.timezone_colors["c7a19d"] = "0.0" # Conakry, Guinea
+        self.timezone_colors["5b3e31"] = "0.0" # Bissau, Guinea-Bissau
+        self.timezone_colors["3f2314"] = "0.0" # Monrovia, Liberia
+        self.timezone_colors["d515db"] = "6.5" # Rangoon, Myanmar
+        self.timezone_colors["fd0000"] = "-7.0" # Bahia_Banderas, Mexico
+        self.timezone_colors["ffb37f"] = "8.0" # Kuching, Malaysia
+        self.timezone_colors["ff0066"] = "11.5" # Norfolk
+        self.timezone_colors["351500"] = "1.0" # Lagos, Nigeria
+        self.timezone_colors["ff8935"] = "12.75" # Chatham, New Zealand
+        self.timezone_colors["913a00"] = "2.0" # Kigali, Rwanda
+        self.timezone_colors["ffb17d"] = "8.0" # Singapore
+        self.timezone_colors["ddb6b3"] = "0.0" # Freetown, Sierra Leone
+        self.timezone_colors["ffb482"] = "9.0" # Dili, East Timor
+        self.timezone_colors["ff5599"] = "13.0" # Tongatapu, Tonga
+        self.timezone_colors["ff2020"] = "-5.0" # Monticello, USA        
+        self.timezone_colors["ff2525"] = "-5.0" # Marengo, USA
+        self.timezone_colors["9d0000"] = "-9.0" # Metlakatla, Alaska/USA
         
-        self.timezones = {}
+        self.timezones = []
         model = Gtk.ListStore(str, object)
         _timezones = open("/usr/share/zoneinfo/zone.tab", "r")
         for line in _timezones:
@@ -123,7 +123,7 @@ class Utils():
                     coordinates = content[1]
                     timezone = content[2]
                     tz = Timezone(timezone, country_code, coordinates)
-                    timezones.append(tz)
+                    self.timezones.append(tz)
                     iter = model.append()
                     model.set_value(iter, 0, timezone)
                     model.set_value(iter, 1, tz) 
@@ -141,7 +141,7 @@ class Utils():
         hexcolor = '%02x%02x%02x' % rgb_im.getpixel((timezone.x, timezone.y))
         print "Color: #%s" % (hexcolor)
         
-        overlay_path = "data/timezone/timezone_%s.png" % timezone_colors[hexcolor]
+        overlay_path = "data/timezone/timezone_%s.png" % self.timezone_colors[hexcolor]
         print "Image: %s" % overlay_path
         
         # Superpose the picture of the timezone on the map
@@ -166,7 +166,7 @@ class Utils():
         index = combobox.get_active()
         if index:
             timezone = model[index][1]
-            timezone_select(timezone)
+            self.timezone_select(timezone)
                 
     def timezone_map_clicked(self, event):
         x = event.x
@@ -175,14 +175,14 @@ class Utils():
             
         min_distance = 1000 # Looking for min, starting with a large number
         closest_timezone = None
-        for timezone in timezones:
+        for timezone in self.timezones:
             distance = abs(x - timezone.x) + abs(y - timezone.y)
             if distance < min_distance:
                 min_distance = distance
                 closest_timezone = timezone
             
         print "Closest timezone %s" % closest_timezone.name
-        timezone_select(closest_timezone)
+        self.timezone_select(closest_timezone)
                     
         combo_timezones = self.builder.get_object("combobox_timezone")
         model = combo_timezones.get_model()
