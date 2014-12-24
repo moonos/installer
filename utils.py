@@ -1,9 +1,9 @@
-from gi.repository import Gtk
+from gi.repository import Gtk, GdkPixbuf
 from PIL import Image
 
 from timezone import Timezone
 
-import commands
+import commands, os
 
 class Utils():
     def __init__(self, builder=None):
@@ -280,3 +280,85 @@ class Utils():
         else:
             print self.keyboard_layout
             #os.system('setxkbmap -layout ' + self.keyboard_layout)
+
+    def update_preview_cb(self, file_chooser, preview):
+        filename = file_chooser.get_preview_filename()
+        try:
+            if filename:
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file(filename)
+                preview.set_from_pixbuf(pixbuf)
+                have_preview = True
+            else:
+                have_preview = False
+        except Exception, e:
+            have_preview = False
+            print e
+        file_chooser.set_preview_widget_active(have_preview)
+        return  
+        
+    def face_select_picture_file_chooser(self):
+        window = self.builder.get_object("assistant1")
+        image = Gtk.Image()
+        preview = Gtk.ScrolledWindow()
+        preview.set_policy(Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        preview.set_size_request(150, 150)
+        preview.add_with_viewport(image)
+        image.show()
+        preview.show()
+        chooser = Gtk.FileChooserDialog(title=None, parent=window,
+                                        action=Gtk.FileChooserAction.OPEN,
+                                        buttons=(Gtk.STOCK_CLOSE,
+                                                 Gtk.ResponseType.CANCEL,
+                                                 Gtk.STOCK_OPEN,
+                                                 Gtk.ResponseType.OK))
+        chooser.set_default_response(Gtk.ResponseType.OK)
+        chooser.set_current_folder("/usr/share/pixmaps/faces")
+
+        filter = Gtk.FileFilter()
+        filter.set_name('Images')
+        filter.add_mime_type('image/png')
+        filter.add_mime_type('image/jpeg')
+        filter.add_mime_type('image/gif')
+        filter.add_mime_type('bitmap/bmp')        
+        chooser.add_filter(filter)        
+        chooser.set_preview_widget(preview)
+        chooser.connect("update-preview", self.update_preview_cb, image)
+        response = chooser.run()
+        if response == Gtk.ResponseType.OK:
+            filename = chooser.get_filename()
+            os.system("convert '%s' -resize x96 /tmp/live-installer-face.png" % filename)
+            image_user = self.builder.get_object("image_user")
+            image_user.set_from_file("/tmp/live-installer-face.png")
+        chooser.destroy()
+
+    def face_select_picture(self):
+        window = self.builder.get_object("assistant1")
+        
+        # use local builder to reset glade reference
+        builder = Gtk.Builder()
+        builder.add_from_file("data/moonos_installer.ui")
+        
+        liststore = Gtk.ListStore(GdkPixbuf.Pixbuf)
+        
+        iconview = builder.get_object("iconview_username")
+        iconview.set_model(liststore)
+        iconview.set_pixbuf_column(0)
+        
+        path = "/usr/share/pixmaps/faces"
+        listimg = os.listdir(path)
+        for img in listimg:
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(os.path.join(path, img))
+            liststore.append([pixbuf])
+        
+        chooser = builder.get_object("messagedialog_userimage")
+        chooser.set_default_response(Gtk.ResponseType.OK)
+        chooser.set_transient_for(window)
+        response = chooser.run()
+        if response == Gtk.ResponseType.OK:
+            position = iconview.get_selected_items()[0]
+            img = listimg[int(position.to_string())]
+            filename = os.path.join(path, img)
+            os.system("convert '%s' -resize x96 /tmp/live-installer-face.png" % filename)
+            image_user = self.builder.get_object("image_user")
+            image_user.set_from_file("/tmp/live-installer-face.png")
+        chooser.destroy()

@@ -55,3 +55,7 @@ class Handler():
     def on_keylangsublist_selection_changed(self, selection):
         self.utils.assign_keyboard_variant(selection)
         self.mark_as_complete("box_keyboard")
+    
+    def on_button_user_clicked(self, button):
+        self.utils.face_select_picture()
+        self.mark_as_complete("box_user")
