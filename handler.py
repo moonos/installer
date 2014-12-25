@@ -59,3 +59,9 @@ class Handler():
     def on_button_user_clicked(self, button):
         self.utils.face_select_picture()
         self.mark_as_complete("box_user")
+    
+    def on_entry_pw_changed(self, editable):
+        self.utils.assign_password()
+    
+    def on_entry_pw_verify_changed(self, editable):
+        self.utils.assign_password()

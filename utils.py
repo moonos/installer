@@ -362,3 +362,21 @@ class Utils():
             image_user = self.builder.get_object("image_user")
             image_user.set_from_file("/tmp/live-installer-face.png")
         chooser.destroy()
+
+    def assign_password(self):
+        entry_pw = self.builder.get_object("entry_pw")
+        entry_pw_verify = self.builder.get_object("entry_pw_verify")
+        label_pw = self.builder.get_object("label_pw")
+        
+        self.password = entry_pw.get_text()
+        self.password_verify = entry_pw_verify.get_text()
+        
+        if(self.password == "" and self.password_verify == ""):
+            label_pw.hide()
+        else:
+            label_pw.show()
+            
+        if (self.password != self.password_verify):
+            label_pw.set_label("Passwords not match.")
+        else:
+            label_pw.set_label("Passwords match.")

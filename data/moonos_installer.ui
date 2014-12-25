@@ -415,6 +415,7 @@
                 <property name="visibility">False</property>
                 <property name="placeholder_text" translatable="yes">New Password</property>
                 <property name="input_purpose">password</property>
+                <signal name="changed" handler="on_entry_pw_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>
@@ -428,6 +429,7 @@
                 <property name="visibility">False</property>
                 <property name="placeholder_text" translatable="yes">Verify</property>
                 <property name="input_purpose">password</property>
+                <signal name="changed" handler="on_entry_pw_verify_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -530,10 +532,9 @@
               </packing>
             </child>
             <child>
-              <object class="GtkLabel" id="label18">
+              <object class="GtkLabel" id="label_pw">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">Password Hint</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                   <attribute name="foreground" value="#efef29292929"/>
