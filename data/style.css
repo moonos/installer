@@ -1,6 +1,55 @@
+@define-color bg_color #000000;
+
+.partition_view {
+    background-color: transparent;
+}
+
+.partition_view.view.cell:selected,
+.partition_view.view.cell:selected:focused {
+    background-color: alpha(@bg_color, 0.1);
+    border-style: inset;
+    border-radius: 10px;
+}
+
+.partition_scroll .scrollbar {
+
+    -GtkRange-slider-width:     6px;
+    -GtkRange-stepper-size:     0px;
+    -GtkRange-stepper-spacing:   1px;
+    -GtkRange-trough-border:    1px;
+    
+    -GtkScrollbar-min-slider-length: 30px;
+}
+
+.partition_scroll .scrollbar.trough {
+    background-image: none;
+    background-color: transparent;
+    border-width:      0px;
+    border-radius:      0px;
+}
+
+.partition_scroll .scrollbar.slider,
+.partition_scroll .scrollbar.button {
+    border-width:              0px;
+    background-color:         alpha (#000, 0.2);
+    border-radius:              10px;
+}
+
+
+.partition_scroll .scrollbar.slider:prelight {;
+    background-color: alpha (#000, 0.4);
+}
+
+.partition_scroll .scrollbar.slider:insensitive {
+    -GtkRange-slider-width: 0px;
+}
+
+.partition_scroll .scrollbar.trough:insensitive {
+    -GtkRange-trough-border: 0px;
+}
+
 .background_img {
-  background-image: url('data/moon_background.svg');
-  background-repeat: no-repeat;
-  background-position: 95% 90%;
-  
+    background-image: url('data/moon_background.svg');
+    background-repeat: no-repeat;
+    background-position: 95% 90%;
 }

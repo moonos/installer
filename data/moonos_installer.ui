@@ -42,7 +42,7 @@
               <object class="GtkLabel" id="label3">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">moonOS xXx</property>
+                <property name="label" translatable="yes">moonOS %s</property>
                 <attributes>
                   <attribute name="weight" value="bold"/>
                   <attribute name="scale" value="1.5"/>
@@ -58,7 +58,7 @@
               <object class="GtkLabel" id="label4">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
-                <property name="label" translatable="yes">To setup the installation of moonOS xXx, click Next.</property>
+                <property name="label" translatable="yes">To setup the installation of moonOS %s, click Next.</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -453,6 +453,9 @@
                     <property name="icon_name">user-desktop</property>
                   </object>
                 </child>
+                <style>
+                  <class name="flat"/>
+                </style>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -580,30 +583,84 @@
         <property name="orientation">vertical</property>
         <property name="spacing">3</property>
         <child>
-          <object class="GtkLabel" id="label9">
+          <object class="GtkBox" id="box6">
             <property name="visible">True</property>
             <property name="can_focus">False</property>
-            <property name="label" translatable="yes">Where do you want to install moonOS?</property>
-            <attributes>
-              <attribute name="weight" value="bold"/>
-              <attribute name="scale" value="1.3999999999999999"/>
-            </attributes>
+            <property name="orientation">vertical</property>
+            <child>
+              <object class="GtkImage" id="image1">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="pixbuf">moon_only.png</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label9">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">moonOS %s</property>
+                <attributes>
+                  <attribute name="weight" value="bold"/>
+                  <attribute name="scale" value="1.5"/>
+                </attributes>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="label_target_disk">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
           </object>
           <packing>
-            <property name="expand">True</property>
+            <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
-          <object class="GtkIconView" id="iconview1">
+          <object class="GtkScrolledWindow" id="scrolledwindow5">
+            <property name="height_request">155</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <property name="margin">6</property>
+            <property name="shadow_type">in</property>
+            <child>
+              <object class="GtkIconView" id="iconview_partition">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="halign">center</property>
+                <property name="valign">center</property>
+                <property name="margin">6</property>
+                <property name="item_width">1</property>
+                <signal name="selection-changed" handler="on_iconview_partition_selection_changed" swapped="no"/>
+                <style>
+                  <class name="partition_view"/>
+                </style>
+              </object>
+            </child>
+            <style>
+              <class name="partition_scroll"/>
+              <class name="flat"/>
+            </style>
           </object>
           <packing>
             <property name="expand">True</property>
-            <property name="fill">True</property>
+            <property name="fill">False</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -612,6 +669,9 @@
             <property name="visible">True</property>
             <property name="can_focus">False</property>
             <property name="label" translatable="yes">Select partition and click Install.</property>
+            <style>
+              <class name="partition_scroll"/>
+            </style>
           </object>
           <packing>
             <property name="expand">False</property>

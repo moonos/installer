@@ -1,4 +1,4 @@
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 from utils import Utils
 
 class Handler():
@@ -31,6 +31,11 @@ class Handler():
                 self.utils.build_kb_lists()
             elif assistant.get_current_page() == 3:
                 self.utils.build_timezone()
+            elif assistant.get_current_page() == 5:
+                assistant.set_sensitive(False)
+                cursor = Gdk.Cursor(Gdk.CursorType.WATCH)
+                assistant.get_window().set_cursor(cursor) 
+                self.utils.build_partition_list()
         else:
             print "already initialized"
         
@@ -65,3 +70,6 @@ class Handler():
     
     def on_entry_pw_verify_changed(self, editable):
         self.utils.assign_password()
+    
+    def on_iconview_partition_selection_changed(self, iconview):
+        self.utils.iconview_partition_item_selected(iconview)

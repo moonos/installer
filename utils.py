@@ -2,13 +2,19 @@ from gi.repository import Gtk, GdkPixbuf
 from PIL import Image
 
 from timezone import Timezone
+from setup import Setup
+from partition import PartitionSetup
 
-import commands, os
+import commands
+import os
+import subprocess
+import parted
 
 class Utils():
     def __init__(self, builder=None):
         self.builder = builder;
         self.renderer = Gtk.CellRendererText()
+        self.setup = Setup()
         
     def build_lang_list(self):
         langlist = self.builder.get_object("langlist")
@@ -380,3 +386,115 @@ class Utils():
             label_pw.set_label("Passwords not match.")
         else:
             label_pw.set_label("Passwords match.")
+
+    def build_hdds(self):
+        self.setup.disks = []
+        output = subprocess.Popen("lsblk -nrdo TYPE,NAME,SIZE,RM | grep ^disk", shell=True, stdout=subprocess.PIPE)
+        for line in output.stdout:
+            line = line.rstrip("\r\n")
+            sections = line.split(" ")
+            if len(sections) == 4:
+                dev_name = sections[1]
+                dev_size = sections[2]
+                dev_removable = sections[3]
+                dev_path = "/dev/%s" % dev_name
+                if dev_removable == "0":
+                    self.setup.disks.append(dev_path)
+            else:
+                print "WARNING, erroneous info collected for disks. Please show this to the development team: %s" % line
+                
+    def build_partition_list(self):
+        window = self.builder.get_object("assistant1")
+        
+        liststore = Gtk.ListStore(GdkPixbuf.Pixbuf, str, str)
+        
+        iconview = self.builder.get_object("iconview_partition")
+        iconview.set_model(liststore)
+        iconview.set_pixbuf_column(0)
+        iconview.set_text_column(1)
+        
+        self.build_hdds()
+        
+        os.popen('mkdir -p /tmp/live-installer/tmpmount')
+        
+        try:
+            self.setup.partitions = []
+            os.system("modprobe efivars >/dev/null 2>&1")
+            if os.path.exists("/proc/efi") or os.path.exists("/sys/firmware/efi"):
+                self.setup.gptonefi = True
+            for hdd in self.setup.disks:
+                device = parted.getDevice(hdd)
+                try:
+                    disk = parted.Disk(device)
+                except Exception:
+                    raise
+                partition = disk.getFirstPartition()
+                last_added_partition = PartitionSetup(partition)
+                partition = partition.nextPartition()
+                while (partition is not None):
+                    if last_added_partition.partition.number == -1 and partition.number == -1:
+                        last_added_partition.add_partition(partition)
+                    else:                        
+                        last_added_partition = PartitionSetup(partition) 
+                        if "swap" in last_added_partition.type:
+                            last_added_partition.type = "swap"
+                            last_added_partition.description = "swap"
+                        
+                        #if partition.number != -1 and "swap" not in last_added_partition.type and partition.type != parted.PARTITION_EXTENDED:
+                            #Umount temp folder
+                        #    if ('/tmp/live-installer/tmpmount' in commands.getoutput('mount')):
+                        #        os.popen('umount /tmp/live-installer/tmpmount')
+
+                            #Mount partition if not mounted
+                        #    if (partition.path not in commands.getoutput('mount')):                                
+                        #        os.system("mount %s /tmp/live-installer/tmpmount" % partition.path)
+                            
+                            #Identify partition's description and used space
+                        #    if (partition.path in commands.getoutput('mount')):
+                        #        df_lines = commands.getoutput("df 2>/dev/null | grep %s" % partition.path).split('\n')
+                        #        for df_line in df_lines:
+                        #            df_elements = df_line.split()
+                        #            if df_elements[0] == partition.path:
+                        #                last_added_partition.used_space = df_elements[4]  
+                        #                mount_point = df_elements[5]                              
+                        #                if "%" in last_added_partition.used_space:
+                        #                    used_space_pct = int(last_added_partition.used_space.replace("%", "").strip())
+                        #                    last_added_partition.free_space = int(float(last_added_partition.size) * (float(100) - float(used_space_pct)) / float(100))                                            
+                        #            break
+                        #    else:
+                        #        print "Failed to mount %s" % partition.path
+
+                            
+                            #Umount temp folder
+                        #    if ('/tmp/live-installer/tmpmount' in commands.getoutput('mount')):
+                        #        os.popen('umount /tmp/live-installer/tmpmount') 
+                                
+                    if last_added_partition.size > 1.0:
+                        pixbuf = Gtk.IconTheme.get_default().load_icon("drive-harddisk", 96, 0)
+                        display_name = last_added_partition.label
+                        path = last_added_partition.name
+                        if last_added_partition.type == "ext3":
+                            liststore.append([pixbuf, display_name, path])
+                        elif last_added_partition.type == "ext4":
+                            liststore.append([pixbuf, display_name, path])
+                    
+                    partition = partition.nextPartition()
+        except Exception, detail:
+            print detail
+        
+        window.set_sensitive(True)
+        window.get_window().set_cursor(None) 
+        
+    def iconview_partition_item_selected(self, iconview):
+        label_target_disk = self.builder.get_object("label_target_disk")
+        label_target_disk.show()
+        
+        path = iconview.get_selected_items()
+        liststore = iconview.get_model()
+        treeiter = liststore.get_iter(path)
+        
+        display_name = liststore.get_value(treeiter, 1)
+        path = liststore.get_value(treeiter, 2)
+        
+        text = "moonOS will installed on the disk \"%s\"" % display_name
+        label_target_disk.set_label(text)
