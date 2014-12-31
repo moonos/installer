@@ -1,11 +1,11 @@
-from gi.repository import Gtk, Gdk, GdkPixbuf
+from gi.repository import GLib, Gtk, GObject, Gdk, GdkPixbuf
 from PIL import Image
-from concurrent import futures
 
 from timezone import Timezone
 from setup import Setup
 from partition import PartitionSetup
 
+import threading
 import commands
 import os
 import subprocess
@@ -421,7 +421,7 @@ class Utils():
                 try:
                     disk = parted.Disk(device)
                 except Exception:
-                    raise
+                    continue
                 partition = disk.getFirstPartition()
                 last_added_partition = PartitionSetup(partition)
                 partition = partition.nextPartition()
@@ -475,7 +475,7 @@ class Utils():
         except Exception, detail:
             print detail
         
-        return liststore
+        GLib.idle_add(self.build_partition_listview, liststore, priority=GLib.PRIORITY_LOW)
             
     def set_cursor(self, cursor):
         window = self.builder.get_object("assistant1")
@@ -488,15 +488,15 @@ class Utils():
             cursor = Gdk.Cursor(Gdk.CursorType.ARROW)
             window.get_root_window().set_cursor(cursor) 
         
-    def build_partition_listview(self, future):
+    def build_partition_listview(self, model):
         label_target_disk = self.builder.get_object("label_target_disk")
         label_target_disk.set_label("")
         
-        if len(future.result()) == 0:
-            label_target_disk.set_label("Error")
+        if len(model) == 0:
+            label_target_disk.set_label("No partition table was found on the hard drive. Open Partition Tool to create partitions.")
         else:
             liststore = Gtk.ListStore(GdkPixbuf.Pixbuf, str, str)
-            for display_name, path in future.result():
+            for display_name, path in model:
                 pixbuf = Gtk.IconTheme.get_default().load_icon("drive-harddisk", 96, 0)
                 liststore.append([pixbuf, display_name, path])
             
@@ -509,9 +509,10 @@ class Utils():
         
     def build_partition_list(self): 
         self.set_cursor("busy")
-        executor = futures.ThreadPoolExecutor(max_workers=1)
-        future = executor.submit(self.build_partition_model)
-        future.add_done_callback(self.build_partition_listview)
+        
+        thread = threading.Thread(target=self.build_partition_model)
+        thread.daemon = True
+        thread.start()
         
     def iconview_partition_item_selected(self, iconview):
         label_target_disk = self.builder.get_object("label_target_disk")
