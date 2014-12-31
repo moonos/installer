@@ -1,5 +1,7 @@
-from gi.repository import Gtk, Gdk
+from gi.repository import Gtk
 from utils import Utils
+
+import os
 
 class Handler():
     def __init__(self, builder=None):
@@ -32,9 +34,6 @@ class Handler():
             elif assistant.get_current_page() == 3:
                 self.utils.build_timezone()
             elif assistant.get_current_page() == 5:
-                assistant.set_sensitive(False)
-                cursor = Gdk.Cursor(Gdk.CursorType.WATCH)
-                assistant.get_window().set_cursor(cursor) 
                 self.utils.build_partition_list()
         else:
             print "already initialized"
@@ -73,3 +72,9 @@ class Handler():
     
     def on_iconview_partition_selection_changed(self, iconview):
         self.utils.iconview_partition_item_selected(iconview)
+    
+    def on_button_gparted_clicked(self, button):
+        os.popen("gparted &")
+    
+    def on_button_refresh_clicked(self, button):
+        self.utils.build_partition_list()

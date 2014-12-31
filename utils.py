@@ -1,5 +1,6 @@
-from gi.repository import Gtk, GdkPixbuf
+from gi.repository import Gtk, Gdk, GdkPixbuf
 from PIL import Image
+from concurrent import futures
 
 from timezone import Timezone
 from setup import Setup
@@ -403,15 +404,8 @@ class Utils():
             else:
                 print "WARNING, erroneous info collected for disks. Please show this to the development team: %s" % line
                 
-    def build_partition_list(self):
-        window = self.builder.get_object("assistant1")
-        
-        liststore = Gtk.ListStore(GdkPixbuf.Pixbuf, str, str)
-        
-        iconview = self.builder.get_object("iconview_partition")
-        iconview.set_model(liststore)
-        iconview.set_pixbuf_column(0)
-        iconview.set_text_column(1)
+    def build_partition_model(self):
+        liststore = []
         
         self.build_hdds()
         
@@ -470,20 +464,54 @@ class Utils():
                         #        os.popen('umount /tmp/live-installer/tmpmount') 
                                 
                     if last_added_partition.size > 1.0:
-                        pixbuf = Gtk.IconTheme.get_default().load_icon("drive-harddisk", 96, 0)
                         display_name = last_added_partition.label
                         path = last_added_partition.name
                         if last_added_partition.type == "ext3":
-                            liststore.append([pixbuf, display_name, path])
+                            liststore.append([display_name, path])
                         elif last_added_partition.type == "ext4":
-                            liststore.append([pixbuf, display_name, path])
+                            liststore.append([display_name, path])
                     
                     partition = partition.nextPartition()
         except Exception, detail:
             print detail
         
-        window.set_sensitive(True)
-        window.get_window().set_cursor(None) 
+        return liststore
+            
+    def set_cursor(self, cursor):
+        window = self.builder.get_object("assistant1")
+        if cursor == "busy":
+            window.set_sensitive(False)
+            cursor = Gdk.Cursor(Gdk.CursorType.WATCH)
+            window.get_root_window().set_cursor(cursor)
+        else:
+            window.set_sensitive(True)
+            cursor = Gdk.Cursor(Gdk.CursorType.ARROW)
+            window.get_root_window().set_cursor(cursor) 
+        
+    def build_partition_listview(self, future):
+        label_target_disk = self.builder.get_object("label_target_disk")
+        label_target_disk.set_label("")
+        
+        if len(future.result()) == 0:
+            label_target_disk.set_label("Error")
+        else:
+            liststore = Gtk.ListStore(GdkPixbuf.Pixbuf, str, str)
+            for display_name, path in future.result():
+                pixbuf = Gtk.IconTheme.get_default().load_icon("drive-harddisk", 96, 0)
+                liststore.append([pixbuf, display_name, path])
+            
+            iconview = self.builder.get_object("iconview_partition")
+            iconview.set_model(liststore)
+            iconview.set_pixbuf_column(0)
+            iconview.set_text_column(1)
+        
+        self.set_cursor("normal")
+        
+    def build_partition_list(self): 
+        self.set_cursor("busy")
+        executor = futures.ThreadPoolExecutor(max_workers=1)
+        future = executor.submit(self.build_partition_model)
+        future.add_done_callback(self.build_partition_listview)
         
     def iconview_partition_item_selected(self, iconview):
         label_target_disk = self.builder.get_object("label_target_disk")
