@@ -1,7 +1,10 @@
 @define-color bg_color #000000;
+@define-color white_color #ffffff;
 
 .partition_view {
-    background-color: transparent;
+    background-color: alpha(@white_color, 0.1);
+    border-style: inset;
+    border-radius: 10px;
 }
 
 .partition_view.view.cell:selected,
@@ -30,14 +33,14 @@
 
 .partition_scroll .scrollbar.slider,
 .partition_scroll .scrollbar.button {
-    border-width:              0px;
-    background-color:         alpha (#000, 0.2);
-    border-radius:              10px;
+    border-width: 0px;
+    background-color: alpha(@bg_color, 0.2);
+    border-radius: 10px;
 }
 
 
 .partition_scroll .scrollbar.slider:prelight {;
-    background-color: alpha (#000, 0.4);
+    background-color: alpha(@bg_color, 0.4);
 }
 
 .partition_scroll .scrollbar.slider:insensitive {
