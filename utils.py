@@ -538,14 +538,15 @@ class Utils():
         label_target_disk.show()
         
         path = iconview.get_selected_items()
-        liststore = iconview.get_model()
-        treeiter = liststore.get_iter(path)
+        if (path):
+           liststore = iconview.get_model()
+           treeiter = liststore.get_iter(path)
         
-        display_name = liststore.get_value(treeiter, 1)
-        path = liststore.get_value(treeiter, 2)
+           display_name = liststore.get_value(treeiter, 1)
+           path = liststore.get_value(treeiter, 2)
         
-        text = "moonOS will installed on the disk \"%s\"" % display_name
-        label_target_disk.set_label(text)
+           text = "moonOS will installed on the disk \"%s\"" % display_name
+           label_target_disk.set_label(text)
         
     def grub_dialog(self):
         window = self.builder.get_object("assistant1")
