@@ -33,6 +33,8 @@ class Handler():
                 self.utils.build_kb_lists()
             elif assistant.get_current_page() == 3:
                 self.utils.build_timezone()
+            elif assistant.get_current_page() == 4:
+                self.utils.setup_user_page_hint()
             elif assistant.get_current_page() == 5:
                 self.utils.build_partition_list()
         else:
@@ -62,7 +64,6 @@ class Handler():
     
     def on_button_user_clicked(self, button):
         self.utils.face_select_picture()
-        self.mark_as_complete("box_user")
     
     def on_entry_pw_changed(self, editable):
         self.utils.assign_password()
@@ -75,6 +76,9 @@ class Handler():
     
     def on_button_gparted_clicked(self, button):
         os.popen("gparted &")
+
+    def on_button_grub_clicked(self, button):
+        self.utils.grub_dialog()
     
     def on_button_refresh_clicked(self, button):
         self.utils.build_partition_list()

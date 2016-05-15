@@ -8,20 +8,10 @@
 }
 
 .partition_view.view.cell:selected,
-.partition_view.view.cell:selected:focused {
+.partition_view.view.cell:selected:focus {
     background-color: alpha(@bg_color, 0.1);
     border-style: inset;
     border-radius: 10px;
-}
-
-.partition_scroll .scrollbar {
-
-    -GtkRange-slider-width:     6px;
-    -GtkRange-stepper-size:     0px;
-    -GtkRange-stepper-spacing:   1px;
-    -GtkRange-trough-border:    1px;
-    
-    -GtkScrollbar-min-slider-length: 30px;
 }
 
 .partition_scroll .scrollbar.trough {
@@ -29,9 +19,23 @@
     background-color: transparent;
     border-width:      0px;
     border-radius:      0px;
+    margin: 1px;
 }
 
-.partition_scroll .scrollbar.slider,
+.partition_scroll .scrollbar.slider {
+    border-width: 0px;
+    background-color: alpha(@bg_color, 0.2);
+    border-radius: 10px;
+    min-width: 6px;
+    min-height: 30px;
+}
+
+.partition_scroll .scrollbar.stepper {
+    min-width: 0px;
+    min-height: 0px;
+    margin: 1px;
+}
+
 .partition_scroll .scrollbar.button {
     border-width: 0px;
     background-color: alpha(@bg_color, 0.2);
@@ -39,16 +43,20 @@
 }
 
 
-.partition_scroll .scrollbar.slider:prelight {;
+.partition_scroll .scrollbar.slider:hover {;
     background-color: alpha(@bg_color, 0.4);
 }
 
-.partition_scroll .scrollbar.slider:insensitive {
-    -GtkRange-slider-width: 0px;
+.partition_scroll .scrollbar.slider:disabled {
+    min-width: 0px;
 }
 
-.partition_scroll .scrollbar.trough:insensitive {
-    -GtkRange-trough-border: 0px;
+.partition_scroll .scrollbar.trough:disabled {
+    margin: 0px;
+}
+
+.partition_scroll .scrollbar.stepper:disabled {
+    margin: 0px;
 }
 
 .background_img {

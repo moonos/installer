@@ -338,7 +338,24 @@ class Utils():
             image_user.set_from_file("/tmp/live-installer-face.png")
         chooser.destroy()
 
+    def setup_user_page_hint(self):
+        entry_fullname_hint = self.builder.get_object("entry_fullname_hint")
+        entry_fullname_hint.set_xalign(1)
+        
+        entry_username_hint = self.builder.get_object("entry_username_hint")
+        entry_username_hint.set_xalign(1)
+        
+        entry_pw_hint = self.builder.get_object("entry_pw_hint")
+        entry_pw_hint.set_xalign(1)
+        
+        switch_auto_login_hint = self.builder.get_object("switch_auto_login_hint")
+        switch_auto_login_hint.set_xalign(1)
+        
+        entry_hostname_hint = self.builder.get_object("entry_hostname_hint")
+        entry_hostname_hint.set_xalign(1)
+        
     def face_select_picture(self):
+        result = False
         window = self.builder.get_object("assistant1")
         
         # use local builder to reset glade reference
@@ -368,7 +385,9 @@ class Utils():
             os.system("convert '%s' -resize x96 /tmp/live-installer-face.png" % filename)
             image_user = self.builder.get_object("image_user")
             image_user.set_from_file("/tmp/live-installer-face.png")
+            result = True
         chooser.destroy()
+        return result
 
     def assign_password(self):
         entry_pw = self.builder.get_object("entry_pw")
@@ -527,3 +546,37 @@ class Utils():
         
         text = "moonOS will installed on the disk \"%s\"" % display_name
         label_target_disk.set_label(text)
+        
+    def grub_dialog(self):
+        window = self.builder.get_object("assistant1")
+        
+        # use local builder to reset glade reference
+        builder = Gtk.Builder()
+        builder.add_from_file("data/moonos_installer.ui")
+        
+        liststore = Gtk.ListStore(str)
+        
+        path = "/usr/share/pixmaps/faces"
+        listimg = os.listdir(path)
+        for img in listimg:
+            liststore.append([img])
+        
+        combobox_grub_partition = builder.get_object("combobox_grub_partition")
+        combobox_grub_partition.pack_start(self.renderer, True)
+        combobox_grub_partition.add_attribute(self.renderer, 'text', 0)
+        combobox_grub_partition.set_model(liststore)
+        try:
+            combobox_grub_partition.set_active_iter(liststore.get_iter_first())
+        except NameError: pass
+        
+        chooser = builder.get_object("messagedialog_grub")
+        chooser.set_default_response(Gtk.ResponseType.OK)
+        chooser.set_transient_for(window)
+        response = chooser.run()
+        if response == Gtk.ResponseType.OK:
+            tree_iter = combobox_grub_partition.get_active_iter()
+            if tree_iter != None:
+                item = liststore[tree_iter][0]
+                print("Selected: %s" % item)
+        chooser.destroy()
+        
