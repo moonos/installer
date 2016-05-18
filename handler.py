@@ -27,7 +27,6 @@ class Handler():
         hbox.remove(label)
         for child in hbox.get_children():
             label = child.get_label()
-            print label
             if label == '_Finish' or label == '_Apply':
                 child.set_label('Install')
     
