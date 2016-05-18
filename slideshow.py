@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from gi.repository import GLib
 
 import os
