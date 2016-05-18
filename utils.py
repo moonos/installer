@@ -1,4 +1,4 @@
-from gi.repository import GLib, Gtk, GObject, Gdk, GdkPixbuf
+from gi.repository import GLib, Gtk, GObject, Gdk, GdkPixbuf, WebKit2
 from PIL import Image
 
 from timezone import Timezone
@@ -581,3 +581,9 @@ class Utils():
                 print("Selected: %s" % item)
         chooser.destroy()
         
+    def build_slideshow(self):
+        box = self.builder.get_object("box_slideshow")
+        webview = WebKit2.WebView()
+        box.pack_start(webview, True, True, 5)
+        webview.show()
+        webview.load_uri("http://www.moonos.org")

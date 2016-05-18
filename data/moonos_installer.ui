@@ -387,6 +387,7 @@
                   <object class="GtkLabel" id="entry_fullname_hint">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">end</property>
                     <property name="label" translatable="yes">Full Name</property>
                     <style>
                       <class name="dim-label"/>
@@ -402,6 +403,7 @@
                   <object class="GtkLabel" id="entry_username_hint">
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
+                    <property name="halign">end</property>
                     <property name="label" translatable="yes">Username</property>
                     <style>
                       <class name="dim-label"/>
@@ -423,6 +425,7 @@
               <object class="GtkLabel" id="entry_pw_hint">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">end</property>
                 <property name="label" translatable="yes">Password</property>
                 <style>
                   <class name="dim-label"/>
@@ -465,6 +468,7 @@
               <object class="GtkLabel" id="entry_hostname_hint">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">end</property>
                 <property name="margin_top">10</property>
                 <property name="label" translatable="yes">Computer Name</property>
                 <style>
@@ -491,6 +495,7 @@
               <object class="GtkLabel" id="switch_auto_login_hint">
                 <property name="visible">True</property>
                 <property name="can_focus">False</property>
+                <property name="halign">end</property>
                 <property name="label" translatable="yes">Auto Login</property>
                 <style>
                   <class name="dim-label"/>
@@ -560,7 +565,7 @@
                     <property name="can_focus">False</property>
                     <property name="valign">center</property>
                     <property name="pixel_size">96</property>
-                    <property name="icon_name">user-desktop</property>
+                    <property name="icon_name">face-smile-big</property>
                   </object>
                 </child>
                 <style>
@@ -770,6 +775,7 @@
         </child>
       </object>
       <packing>
+        <property name="complete">True</property>
         <property name="has_padding">False</property>
       </packing>
     </child>
@@ -798,6 +804,7 @@
         </child>
       </object>
       <packing>
+        <property name="page_type">progress</property>
         <property name="has_padding">False</property>
       </packing>
     </child>

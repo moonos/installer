@@ -13,6 +13,10 @@ class Handler():
         vbox = self.builder.get_object(box)
         assistant.set_page_complete(vbox, True)
     
+    def commit(self):
+        assistant = self.builder.get_object("assistant1")
+        assistant.commit()
+    
     def onDeleteWindow(self, *args):
         Gtk.main_quit(*args)
 
@@ -37,6 +41,10 @@ class Handler():
                 self.utils.setup_user_page_hint()
             elif assistant.get_current_page() == 5:
                 self.utils.build_partition_list()
+            elif assistant.get_current_page() == 6:
+                self.utils.build_slideshow()
+                self.commit()
+                self.mark_as_complete("box_slideshow")
         else:
             print "already initialized"
         
