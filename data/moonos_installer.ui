@@ -605,7 +605,6 @@
         </child>
       </object>
       <packing>
-        <property name="complete">True</property>
         <property name="has_padding">False</property>
       </packing>
     </child>
@@ -775,6 +774,7 @@
         </child>
       </object>
       <packing>
+        <property name="page_type">confirm</property>
         <property name="complete">True</property>
         <property name="has_padding">False</property>
       </packing>

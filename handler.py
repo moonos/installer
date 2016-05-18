@@ -7,6 +7,7 @@ class Handler():
     def __init__(self, builder=None):
         self.builder = builder
         self.utils = Utils(builder)
+        self.apply_custom_assistant_button_label()
         
     def mark_as_complete(self, box=None):
         assistant = self.builder.get_object("assistant1")
@@ -16,6 +17,19 @@ class Handler():
     def commit(self):
         assistant = self.builder.get_object("assistant1")
         assistant.commit()
+    
+    def apply_custom_assistant_button_label(self):
+        # temporarily add a widget to the action area and get its parent
+        assistant = self.builder.get_object("assistant1")
+        label = Gtk.Label('')
+        assistant.add_action_widget(label)
+        hbox = label.get_parent()
+        hbox.remove(label)
+        for child in hbox.get_children():
+            label = child.get_label()
+            print label
+            if label == '_Finish' or label == '_Apply':
+                child.set_label('Install')
     
     def onDeleteWindow(self, *args):
         Gtk.main_quit(*args)
@@ -38,6 +52,7 @@ class Handler():
             elif assistant.get_current_page() == 3:
                 self.utils.build_timezone()
             elif assistant.get_current_page() == 4:
+                self.mark_as_complete("box_user")
                 self.utils.setup_user_page_hint()
             elif assistant.get_current_page() == 5:
                 self.utils.build_partition_list()
