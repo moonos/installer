@@ -4,6 +4,7 @@ from PIL import Image
 from timezone import Timezone
 from setup import Setup
 from partition import PartitionSetup
+from slideshow import Slideshow
 
 import threading
 import commands
@@ -15,6 +16,7 @@ class Utils():
     def __init__(self, builder=None):
         self.builder = builder;
         self.renderer = Gtk.CellRendererText()
+        self.slideshow_path = "/usr/share/live-installer/slideshow"
         self.setup = Setup()
         
     def build_lang_list(self):
@@ -581,9 +583,26 @@ class Utils():
                 print("Selected: %s" % item)
         chooser.destroy()
         
+    def disable_webview_context_menu(self, web_view, context_menu, event, hit_test_result):
+        # return true will prevent the menu from being displayed
+        return True
+        
     def build_slideshow(self):
         box = self.builder.get_object("box_slideshow")
         webview = WebKit2.WebView()
+        webview.connect("context-menu", self.disable_webview_context_menu)
         box.pack_start(webview, True, True, 5)
-        webview.show()
-        webview.load_uri("http://www.moonos.org")
+        
+        dev_path = os.path.join(os.getcwd(), "data/slideshow")
+        if os.path.exists(dev_path):
+            self.slideshow_path = dev_path
+            
+        if os.path.exists(self.slideshow_path):
+            setting = webview.get_settings()
+            setting.set_property('allow-file-access-from-file-urls', True)
+            webview.load_uri("file://" + os.path.join(self.slideshow_path, 'template.html'))
+            webview.show()
+            
+            slideThr = Slideshow(webview, self.slideshow_path)
+            slideThr.daemon = True  # let the slide-thread die with the parent
+            slideThr.start()
